@@ -28,7 +28,7 @@ const generateNoteDOM = function(note) {
     } else {
         textEl.textContent = 'Unnamed note'
     }
-    textEl.setAttribute('href',`/edit.html#${note.id}`)//Nadaje stworzonemu linkowi atrybut href z wartością edit.html + unikalne id każdej utworzonej notki. Dzięki temu każda notka będzie miała osobną stronę edycji
+    textEl.setAttribute('href',`edit.html#${note.id}`)//Nadaje stworzonemu linkowi atrybut href z wartością edit.html + unikalne id każdej utworzonej notki. Dzięki temu każda notka będzie miała osobną stronę edycji
 
     const button = document.createElement('button')
     button.textContent = 'x'

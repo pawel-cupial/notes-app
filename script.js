@@ -14,7 +14,7 @@ document.querySelector('#create-note').addEventListener('click', function(e) {
         body: ''})//Dodaje do tablicy "notes" obiekt o kluczach "title", "body" i "id"
     saveNotes(notes)//Zapisuje tablicę "notes" w local storage
     //W localStorage.setItem zawsze trzeba podać dwa argumenty: klucz obiektu (w w/w przykładzie "notes") i wartość (w przykładzie cała tablica "notes", która została zamieniona w stringa)
-    location.assign(`/edit.html#${id}`)//Location to obiekt wbudowany. Metoda assign działa jak anchor. Po kliknięciu "create note" użytkownik zostanie automatycznie przeniesiony na stronę edit.html.
+    location.assign(`edit.html#${id}`)//Location to obiekt wbudowany. Metoda assign działa jak anchor. Po kliknięciu "create note" użytkownik zostanie automatycznie przeniesiony na stronę edit.html.
 })
 
 
