@@ -4,8 +4,8 @@ const removeElement = document.querySelector('#remove-note')
 const noteId = location.hash.substring(1)//Zapisuje w noteId id notki pobrany z adresu URL(location.hash).
 /*Substring przyjmuje 2 argumenty - numer indeksu, od którego zaczyna się cięcie i liczbę znaków, które mają być zawarte w uciętym stringu.
 W powyższym przykładzie ucięty ma być tylko "#" z początku adresu URL(), dlatego nie trzeba podawać drugiego argumentu*/
-const notes = getSavedNotes()//Pobiera notatki z local storage i zapisuje je w const notes
-const note = notes.find(function (note) {
+let notes = getSavedNotes()//Pobiera notatki z local storage i zapisuje je w "notes"
+let note = notes.find(function (note) {
     return note.id === noteId//Sprawdza czy id edytowanej notki zgadza się z id pobranym z adresu URL. Jeśli nie, przenosi użytkownika z powrotem na stronę startową
 })
 if (note === undefined) {
@@ -31,4 +31,23 @@ removeElement.addEventListener('click', function (e) {
     removeNote(note.id)
     saveNotes(notes)
     location.assign('index.html')//Po usunięciu notki przenosi użytkownika z powrotem na stronę główną.
+})
+
+
+/*Poniższy kod zapewnia synchornizację danych na wszystkich kartach. Np. jeśli będę miał otwartą stronę edycji notek na dwóch osobnych kartach
+i na jednej z nich zmienię tytuł notki, tytuł tej notki na drugiej karcie będzie automatycznie aktualizowany. Obiekt window jest na szczycie hierarchii obiektów,
+reprezentuje okno przeglądraki. W poniższym wypadku użyte są 3 własności eventu storage: key, oldValue i newValue*/
+window.addEventListener('storage', function(e) {
+    if (e.key === 'notes') {//Sprawdza czy zmiany były dokonane na kluczu "notes". W tym projekcie nie ma kluczy innych niż "notes" więc warunek jest tylko demonstracyjny
+        notes = JSON.parse(e.newValue)//Pobiera nową wartość z local storage i aktualizuje tablicę z notkami
+    }
+    let note = notes.find(function (note) {
+        return note.id === noteId//Sprawdza czy id edytowanej notki zgadza się z id pobranym z adresu URL. Jeśli nie, przenosi użytkownika z powrotem na stronę startową
+    })
+    if (note === undefined) {
+        location.assign('index.html')
+    }
+    
+    titleElement.value = note.title
+    bodyElement.value = note.body
 })

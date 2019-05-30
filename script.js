@@ -1,4 +1,4 @@
-const notes = getSavedNotes()//Tworzy tablicę notes na podstawie danych zwróconych z funkcji getSavedNotes (dane z local storage albo pustą tablicę)
+let notes = getSavedNotes()//Tworzy tablicę notes na podstawie danych zwróconych z funkcji getSavedNotes (dane z local storage albo pustą tablicę)
 
 const filters = {
     serachText: ''
@@ -25,4 +25,11 @@ document.querySelector('#search-text').addEventListener('input', function(e) {
 
 document.querySelector('#sort-by').addEventListener('change', function(e) {
     console.log(e.target.value)
+})
+
+window.addEventListener('storage', function(e) {
+    if (e.key === 'notes') {
+        notes = JSON.parse(e.newValue)
+        renderNotes(notes, filters)
+    }
 })
