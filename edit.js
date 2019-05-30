@@ -1,31 +1,34 @@
 const titleElement = document.querySelector('#note-title')
 const bodyElement = document.querySelector('#note-body')
 const removeElement = document.querySelector('#remove-note')
-const noteId = location.hash.substring(1)
-const notes = getSavedNotes()
+const noteId = location.hash.substring(1)//Zapisuje w noteId id notki pobrany z adresu URL(location.hash).
+/*Substring przyjmuje 2 argumenty - numer indeksu, od którego zaczyna się cięcie i liczbę znaków, które mają być zawarte w uciętym stringu.
+W powyższym przykładzie ucięty ma być tylko "#" z początku adresu URL(), dlatego nie trzeba podawać drugiego argumentu*/
+const notes = getSavedNotes()//Pobiera notatki z local storage i zapisuje je w const notes
 const note = notes.find(function (note) {
-    return note.id === noteId
+    return note.id === noteId//Sprawdza czy id edytowanej notki zgadza się z id pobranym z adresu URL. Jeśli nie, przenosi użytkownika z powrotem na stronę startową
 })
-
 if (note === undefined) {
     location.assign('index.html')
 }
 
 titleElement.value = note.title
 bodyElement.value = note.body
+/*Powyższe 2 linijki ustawiają domyślną wartość inputów odpowiedni na tytuł notki i tekst notki. Np. jeśli użytkownik na głównej stronie kliknie w notkę o tytule
+"notatka", to po przejściu na stronę edycji w inpucie zamiast placeholdera będzie widniał tytuł "notatka", to samo z body*/
 
 titleElement.addEventListener('input', function (e) {
-    note.title = e.target.value
+    note.title = e.target.value//Ustawia tytuł notki na wartość podaną przez użytkownika w inpucie
     saveNotes(notes)
 })
 
 bodyElement.addEventListener('input', function (e) {
-    note.body = e.target.value
+    note.body = e.target.value//To samo co powyżej tylko z body
     saveNotes(notes)
 })
 
 removeElement.addEventListener('click', function (e) {
     removeNote(note.id)
     saveNotes(notes)
-    location.assign('index.html')
+    location.assign('index.html')//Po usunięciu notki przenosi użytkownika z powrotem na stronę główną.
 })
