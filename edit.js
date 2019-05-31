@@ -1,6 +1,7 @@
 const titleElement = document.querySelector('#note-title')
 const bodyElement = document.querySelector('#note-body')
 const removeElement = document.querySelector('#remove-note')
+const dateElement = document.querySelector('#last-edited')
 const noteId = location.hash.substring(1)//Zapisuje w noteId id notki pobrany z adresu URL(location.hash).
 /*Substring przyjmuje 2 argumenty - numer indeksu, od którego zaczyna się cięcie i liczbę znaków, które mają być zawarte w uciętym stringu.
 W powyższym przykładzie ucięty ma być tylko "#" z początku adresu URL(), dlatego nie trzeba podawać drugiego argumentu*/
@@ -14,16 +15,22 @@ if (note === undefined) {
 
 titleElement.value = note.title
 bodyElement.value = note.body
-/*Powyższe 2 linijki ustawiają domyślną wartość inputów odpowiedni na tytuł notki i tekst notki. Np. jeśli użytkownik na głównej stronie kliknie w notkę o tytule
-"notatka", to po przejściu na stronę edycji w inpucie zamiast placeholdera będzie widniał tytuł "notatka", to samo z body*/
+dateElement.textContent = `Last edited ${moment(note.updatedAt).fromNow()}`
+/*Powyższe 2 linijki ustawiają domyślną wartość inputów odpowiednio na tytuł notki i tekst notki. Np. jeśli użytkownik na głównej stronie kliknie w notkę o tytule
+"notatka", to po przejściu na stronę edycji w inpucie zamiast placeholdera będzie widniał tytuł "notatka", to samo z body. Trzecia linijka wstawia w span informację o tym,
+ile czasu temu notka była edytowana.  */
 
 titleElement.addEventListener('input', function (e) {
     note.title = e.target.value//Ustawia tytuł notki na wartość podaną przez użytkownika w inpucie
+    note.updatedAt = moment().valueOf()//Funkcje z biblioteki "Moment JS". Aktualizuje informację kiedy notka była edytowana
+    dateElement.textContent = `Last edited ${moment(note.updatedAt).fromNow()}`
     saveNotes(notes)
 })
 
 bodyElement.addEventListener('input', function (e) {
     note.body = e.target.value//To samo co powyżej tylko z body
+    note.updatedAt = moment().valueOf()//Funkcje z bilbiotki "Moment JS"
+    dateElement.textContent = `Last edited ${moment(note.updatedAt).fromNow()}`
     saveNotes(notes)
 })
 
@@ -50,4 +57,5 @@ window.addEventListener('storage', function(e) {
     
     titleElement.value = note.title
     bodyElement.value = note.body
+    dateElement.textContent = `Last edited ${moment(note.updatedAt).fromNow()}`
 })

@@ -8,10 +8,13 @@ renderNotes(notes, filters)//Pierwotne renderowanie. Bez tego wezwania do czasu 
 
 document.querySelector('#create-note').addEventListener('click', function(e) {
     const id = uuidv4()//Zaspiuje unikalny identyfikator w zmiennej "id". Następnie trzeba odwołać się do tej zmiennej w kluczu id oraz w adresie URL w location.assign
+    const timestamp = moment().valueOf()//Wykorzystuje funkcje z biblioteki "Moment JS"
     notes.push({
         id: id, 
         title: '', 
-        body: ''})//Dodaje do tablicy "notes" obiekt o kluczach "title", "body" i "id"
+        body: '',
+        createdAt: timestamp,
+        updatedAt: timestamp})//Dodaje do tablicy "notes" obiekt o kluczach "title", "body", "id", "createdAt" i "updatedAt"
     saveNotes(notes)//Zapisuje tablicę "notes" w local storage
     //W localStorage.setItem zawsze trzeba podać dwa argumenty: klucz obiektu (w w/w przykładzie "notes") i wartość (w przykładzie cała tablica "notes", która została zamieniona w stringa)
     location.assign(`edit.html#${id}`)//Location to obiekt wbudowany. Metoda assign działa jak anchor. Po kliknięciu "create note" użytkownik zostanie automatycznie przeniesiony na stronę edit.html.
