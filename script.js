@@ -1,7 +1,8 @@
 let notes = getSavedNotes()//Tworzy tablicę notes na podstawie danych zwróconych z funkcji getSavedNotes (dane z local storage albo pustą tablicę)
 
 const filters = {
-    serachText: ''
+    serachText: '',
+    sortBy: 'byEdited'//Notatki domyślnie sortowane po dacie edycji
 }
 
 renderNotes(notes, filters)//Pierwotne renderowanie. Bez tego wezwania do czasu wpisania czegokolwiek w inpucie na stronie nie pojawiałyby się żadne notki.
@@ -27,7 +28,8 @@ document.querySelector('#search-text').addEventListener('input', function(e) {
 })
 
 document.querySelector('#sort-by').addEventListener('change', function(e) {
-    console.log(e.target.value)
+    filters.sortBy = e.target.value
+    renderNotes(notes, filters)
 })
 
 window.addEventListener('storage', function(e) {
