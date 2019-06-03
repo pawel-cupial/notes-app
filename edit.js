@@ -7,7 +7,7 @@ const noteId = location.hash.substring(1)//Zapisuje w noteId id notki pobrany z 
 W powyższym przykładzie ucięty ma być tylko "#" z początku adresu URL(), dlatego nie trzeba podawać drugiego argumentu*/
 let notes = getSavedNotes()//Pobiera notatki z local storage i zapisuje je w "notes"
 let note = notes.find((note) => note.id === noteId) //Sprawdza czy id edytowanej notki zgadza się z id pobranym z adresu URL. Jeśli nie, przenosi użytkownika z powrotem na stronę startową
-if (note === undefined) {
+if (!note) {
     location.assign('index.html')
 }
 
@@ -47,7 +47,7 @@ window.addEventListener('storage', (e) => {
         notes = JSON.parse(e.newValue)//Pobiera nową wartość z local storage i aktualizuje tablicę z notkami
     }
     let note = notes.find((note) => note.id === noteId)//Sprawdza czy id edytowanej notki zgadza się z id pobranym z adresu URL. Jeśli nie, przenosi użytkownika z powrotem na stronę startową
-    if (note === undefined) {
+    if (!note) {
         location.assign('index.html')
     }
     

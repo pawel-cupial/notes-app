@@ -1,6 +1,6 @@
 const getSavedNotes = () => {
     const notesJSON = localStorage.getItem('notes')//Zapisuje w notesJSON dane z local storage, które wcześniej były zapisane pod kluczem "notes"
-    if (notesJSON !== null) { //Zwraca dane z local storage jeśli local storage nie jest pusty 
+    if (notesJSON) { //Zwraca dane z local storage jeśli local storage nie jest pusty 
         return JSON.parse(notesJSON)
     } else {
         return []//Jeśli local storage jest pusty, zwraca pustą tablicę
