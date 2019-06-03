@@ -1,9 +1,13 @@
 const getSavedNotes = () => {
     const notesJSON = localStorage.getItem('notes')//Zapisuje w notesJSON dane z local storage, które wcześniej były zapisane pod kluczem "notes"
-    if (notesJSON) { //Zwraca dane z local storage jeśli local storage nie jest pusty 
-        return JSON.parse(notesJSON)
-    } else {
-        return []//Jeśli local storage jest pusty, zwraca pustą tablicę
+    try {
+        if (notesJSON) { //Zwraca dane z local storage jeśli local storage nie jest pusty 
+            return JSON.parse(notesJSON)
+        } else {
+            return []//Jeśli local storage jest pusty, zwraca pustą tablicę
+        }
+    } catch (e) {//W razie błędów w kodzie w try, dzięki wyrażeniu catch zwrócona zostanie pusta tablica (np. jeśli notki w local storage będą w niepoprawnym formacie)
+        return []
     }
 }
 
