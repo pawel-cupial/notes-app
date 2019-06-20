@@ -20,32 +20,28 @@ const removeNote = (id) => {
      //Zwraca indeks notki, której id jest równe id notki wywołanej przez kliknięcie w button z event listenerem(patrz button.addEventListener poniżej)
 
     if(noteIndex > -1) {
-        notes.splice(noteIndex, 1)//Usuwa notkę, która spełniła powyższy warunek. Pierwszy argument to id notki, drugi ilość elementów do usunięcia.
+        notes.splice(noteIndex, 1)//Usuwa notkę, która spełniła powyższy warunek. Pierwszy argument to indeks notki, drugi ilość elementów do usunięcia.
     }
 }
 
 const generateNoteDOM = (note) => {
-    const noteEl = document.createElement('div')
-    const textEl = document.createElement('a')
+    const noteEl = document.createElement('a')
+    noteEl.classList.add('list-item')
+    const textEl = document.createElement('p')
+    textEl.classList.add('list-item__title')
+    const statusEl = document.createElement('p')
+    statusEl.classList.add('list-item__subtitle')
+
     if (note.title.length > 0) {//Jeśli notka nie ma ustawionego tytułu, w miejsce tytułu wstawiany jest tekst "Unnamed note"
         textEl.textContent = note.title
     } else {
         textEl.textContent = 'Unnamed note'
     }
-    textEl.setAttribute('href',`edit.html#${note.id}`)//Nadaje stworzonemu linkowi atrybut href z wartością edit.html + unikalne id każdej utworzonej notki. Dzięki temu każda notka będzie miała osobną stronę edycji
-
-    const button = document.createElement('button')
-    button.textContent = 'x'
-
-    noteEl.appendChild(button)
-    button.addEventListener('click', (e) => {
-    //W tym miejscu jest już dostęp do indywidualnego id każdej notki. Każdy button odpowiada notce, z którą jest w divie
-        removeNote(note.id)//Podtsawia do funkcji removeNote id konkretnej notki
-        saveNotes(notes)//Zapisuje tablicę w local storage już bez usuniętej notki
-        renderNotes(notes, filters)//Renderuje DOM po każdym usunięciu notki
-    })
     noteEl.appendChild(textEl)
-
+    noteEl.setAttribute('href',`edit.html#${note.id}`)//Nadaje stworzonemu linkowi atrybut href z wartością edit.html + unikalne id każdej utworzonej notki. Dzięki temu każda notka będzie miała osobną stronę edycji
+    
+    statusEl.textContent = `Last edited ${moment(note.updatedAt).fromNow()}`
+    noteEl.appendChild(statusEl)
     return noteEl
 }
 
@@ -92,9 +88,15 @@ const renderNotes = (notes, filters) => {
      //Zwraca tablicę notatek, których tytuły zawierają treść filtra i zapisuje ją w FilteredNotes
 
     document.querySelector('#notes').innerHTML = ''//Czyści cały div id=notes przed renderowaniem, żeby notatki się nie powielały
-
-    filteredNotes.forEach((note) => {//Iteruje przez tablicę filteredNotes i renderuje html dla każdej wyfiltorwanej notki
-        const noteEl = generateNoteDOM(note)//Zwraca dane z funkcji generateNoteDOM
-        document.querySelector('#notes').appendChild(noteEl)
-    })
+    if(filteredNotes.length > 0) {
+        filteredNotes.forEach((note) => {//Iteruje przez tablicę filteredNotes i renderuje html dla każdej wyfiltorwanej notki
+            const noteEl = generateNoteDOM(note)//Zwraca dane z funkcji generateNoteDOM
+            document.querySelector('#notes').appendChild(noteEl)
+        })
+    } else {
+        const emptyMessage = document.createElement('p')
+        emptyMessage.textContent = 'No notes to show'
+        emptyMessage.classList.add('empty-message')
+        document.querySelector('#notes').appendChild(emptyMessage)
+    }
 }
